@@ -1,8 +1,12 @@
 # X4-Foundations-visualizar
 
+"Todo esta hecho con IAs y ChatGPT"
+
 X4 Foundations visualizar los savegame, primero pasa de XML a CSV.
 
-Puedes descargar un X4-Foundations_XML_CSV , estan los archivos y codigos y puedes descargar el .exe, ejecuta y selecciona un XML y lo pasara a CSV, en los savegames del juego estan comprimidos, descomprimelo primero, no modifica nada, pero haz copias de seguridad.
+Puedes descargar un X4-Foundations_XML_CSV , estan los archivos y codigos y puedes descargar el (X4_FOUNDATIONS_XML_CSV.exe "_internal" es una (carpeta necesita para funcionar)
+
+Todo comprimido en .rar, descomprimir para poder ejecutar.), ejecuta el X4_FOUNDATIONS_XML_CSV.exe y selecciona un XML y lo pasara a CSV, en los savegames del juego estan comprimidos, descomprimelo primero, no modifica nada, pero haz copias de seguridad. (Todo el codigo esta en el repositorio)
 
 ![imagen](https://github.com/user-attachments/assets/782aa275-5ed8-44e1-bded-9029851bb77c)
 
