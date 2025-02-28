@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", function () {
-    let tableData = []; // Guardamos los datos originales
-    let debounceTimeout; // Controla el tiempo de espera para la búsqueda
+    let tableData = [];
+    let debounceTimeout;
 
     document.getElementById("csvFile").addEventListener("change", function (event) {
         const file = event.target.files[0];
@@ -9,11 +9,25 @@ document.addEventListener("DOMContentLoaded", function () {
         const reader = new FileReader();
         reader.onload = function (e) {
             const csv = Papa.parse(e.target.result, { header: true });
-            tableData = csv.data; // Guardamos los datos completos
+            tableData = csv.data;
+            populateCategoryFilter(tableData);
             displayTable(tableData);
         };
         reader.readAsText(file);
     });
+
+    function populateCategoryFilter(data) {
+        const categoryFilter = document.getElementById("categoryFilter");
+        categoryFilter.innerHTML = '<option value="">Todas las categorías</option>';
+
+        const categories = new Set(data.map(row => row.Category).filter(Boolean));
+        categories.forEach(category => {
+            const option = document.createElement("option");
+            option.value = category;
+            option.textContent = category;
+            categoryFilter.appendChild(option);
+        });
+    }
 
     function displayTable(data) {
         const tableHead = document.getElementById("tableHead");
@@ -24,7 +38,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
         if (data.length === 0) return;
 
-        // Crear encabezados
         const headers = Object.keys(data[0]);
         const headRow = document.createElement("tr");
         headers.forEach(header => {
@@ -36,7 +49,6 @@ document.addEventListener("DOMContentLoaded", function () {
         });
         tableHead.appendChild(headRow);
 
-        // Crear filas (máximo 500 filas para evitar bloqueos)
         const maxRows = 500;
         data.slice(0, maxRows).forEach(row => {
             const tr = document.createElement("tr");
@@ -51,20 +63,26 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // Debounce para mejorar el rendimiento de la búsqueda
     function debounce(func, delay) {
         clearTimeout(debounceTimeout);
         debounceTimeout = setTimeout(func, delay);
     }
 
-    // Filtrar datos en la tabla
-    document.getElementById("filterInput").addEventListener("input", function () {
+    function filterTable() {
         debounce(() => {
-            const filter = this.value.toLowerCase();
-            const filteredData = tableData.filter(row =>
-                Object.values(row).some(value => value && value.toLowerCase().includes(filter))
-            );
+            const filter = document.getElementById("filterInput").value.toLowerCase();
+            const selectedCategory = document.getElementById("categoryFilter").value;
+
+            const filteredData = tableData.filter(row => {
+                const matchesText = Object.values(row).some(value => value && value.toLowerCase().includes(filter));
+                const matchesCategory = selectedCategory === "" || row.Category === selectedCategory;
+                return matchesText && matchesCategory;
+            });
+
             displayTable(filteredData);
-        }, 300); // 300ms de espera antes de buscar
-    });
+        }, 300);
+    }
+
+    document.getElementById("filterInput").addEventListener("input", filterTable);
+    document.getElementById("categoryFilter").addEventListener("change", filterTable);
 });
