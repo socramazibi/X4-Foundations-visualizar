@@ -7,6 +7,14 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
     <script defer src="script.js"></script>
     <style>
+        :root {
+            --background: #f4f4f4;
+            --text-color: #000;
+            --table-bg: white;
+            --header-bg: #ddd;
+            --border-color: #ccc;
+        }
+
         body {
             font-family: Arial, sans-serif;
             margin: 0;
@@ -16,7 +24,9 @@
             align-items: center;
             height: 100vh;
             overflow: hidden;
-            background-color: #f4f4f4;
+            background-color: var(--background);
+            color: var(--text-color);
+            transition: background 0.3s, color 0.3s;
         }
 
         h1 {
@@ -30,10 +40,10 @@
 
         .table-container {
             width: 90%;
-            height: 80vh; /* Ajusta el alto de la tabla */
-            overflow: auto; /* Activa el scroll si hay muchas filas */
-            background: white;
-            border: 1px solid #ccc;
+            height: 80vh;
+            overflow: auto;
+            background: var(--table-bg);
+            border: 1px solid var(--border-color);
             padding: 10px;
         }
 
@@ -46,21 +56,45 @@
             padding: 8px;
             border: 1px solid black;
             text-align: left;
-            white-space: nowrap; /* Evita que el texto sea muy largo */
-            max-width: 300px; /* Ajusta el tamaño de las columnas */
+            white-space: nowrap;
+            max-width: 300px;
             overflow: hidden;
             text-overflow: ellipsis;
         }
 
         th {
-            background-color: #ddd;
+            background-color: var(--header-bg);
             position: sticky;
             top: 0;
         }
+
+        .theme-buttons {
+            margin-bottom: 10px;
+        }
+
+        .theme-buttons button {
+            margin: 5px;
+            padding: 8px;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+
+        .light-mode { background: #fff; color: #000; border: 1px solid #ccc; }
+        .dark-mode { background: #222; color: #fff; border: 1px solid #666; }
+        .blue-mode { background: #1b2a4e; color: #fff; border: 1px solid #3b5998; }
     </style>
 </head>
 <body>
     <h1>Visor de CSV</h1>
+
+    <div class="theme-buttons">
+        <button class="light-mode" onclick="setTheme('light')">☀️ Claro</button>
+        <button class="dark-mode" onclick="setTheme('dark')">🌙 Oscuro</button>
+        <button class="blue-mode" onclick="setTheme('blue')">🌊 Azul Oscuro</button>
+    </div>
+
     <input type="file" id="csvFile" accept=".csv">
     <input type="text" id="filterInput" placeholder="Buscar..." style="width: 300px;">
 
@@ -70,5 +104,36 @@
             <tbody id="tableBody"></tbody>
         </table>
     </div>
+
+    <script>
+        function setTheme(theme) {
+            if (theme === 'light') {
+                document.documentElement.style.setProperty('--background', '#f4f4f4');
+                document.documentElement.style.setProperty('--text-color', '#000');
+                document.documentElement.style.setProperty('--table-bg', '#fff');
+                document.documentElement.style.setProperty('--header-bg', '#ddd');
+                document.documentElement.style.setProperty('--border-color', '#ccc');
+            } else if (theme === 'dark') {
+                document.documentElement.style.setProperty('--background', '#222');
+                document.documentElement.style.setProperty('--text-color', '#fff');
+                document.documentElement.style.setProperty('--table-bg', '#333');
+                document.documentElement.style.setProperty('--header-bg', '#444');
+                document.documentElement.style.setProperty('--border-color', '#666');
+            } else if (theme === 'blue') {
+                document.documentElement.style.setProperty('--background', '#1b2a4e');
+                document.documentElement.style.setProperty('--text-color', '#fff');
+                document.documentElement.style.setProperty('--table-bg', '#2a3d66');
+                document.documentElement.style.setProperty('--header-bg', '#3b5998');
+                document.documentElement.style.setProperty('--border-color', '#3b5998');
+            }
+            localStorage.setItem('theme', theme);
+        }
+
+        // Cargar el tema guardado
+        document.addEventListener("DOMContentLoaded", function () {
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            setTheme(savedTheme);
+        });
+    </script>
 </body>
 </html>
