@@ -17,7 +17,9 @@ En esta ruta ```C:\Users\NOMBRE_USUARIO\Documents\Egosoft\X4\99866623\save``` su
 
 Despues de tener tu partida en .CSV dirigite a esta web de este mismo repositorio y podras cargar tu archivo y visualizar con buscador, para buscar naves,destruidas (en el buscador pon destruid y apareceran las naves, si pones destrido o destruida solo apareceran uno o otros escribiendo destruid apareceran todos, por lo visto en los log interpretan masculino y fenmenino).
 
-https://socramazibi.github.io/X4-Foundations-visualizar
+<p>Enlace a <a href="https://socramazibi.github.io/X4-Foundations-visualizar" target="_blank">X4-Foundations-visualizar</a>.</p>
+
+```https://socramazibi.github.io/X4-Foundations-visualizar```
 
 ![imagen](https://github.com/user-attachments/assets/59d111fc-5c1f-4bca-b142-f68850a6aec4)
 
@@ -26,5 +28,5 @@ https://socramazibi.github.io/X4-Foundations-visualizar
 ```Para buscar naves destruidas en el buscador pon destruid.```
 
 
-Esta echo con varias IAs y ChatGPT, no tengo ni idea de programar lo justo para entretenerme.
+Esta echo con varias IAs y ChatGPT, no tengo ni idea de programar lo justo para entretenerme, le hecha horas hasta que salio algo que me parecia sencillo y funcional.
 
