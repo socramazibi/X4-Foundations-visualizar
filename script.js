@@ -1,4 +1,6 @@
 document.addEventListener("DOMContentLoaded", function () {
+    let tableData = []; // Guardamos los datos originales
+
     document.getElementById("csvFile").addEventListener("change", function (event) {
         const file = event.target.files[0];
         if (!file) return;
@@ -6,7 +8,8 @@ document.addEventListener("DOMContentLoaded", function () {
         const reader = new FileReader();
         reader.onload = function (e) {
             const csv = Papa.parse(e.target.result, { header: true });
-            displayTable(csv.data);
+            tableData = csv.data; // Guardamos los datos completos
+            displayTable(tableData);
         };
         reader.readAsText(file);
     });
@@ -26,6 +29,8 @@ document.addEventListener("DOMContentLoaded", function () {
         headers.forEach(header => {
             const th = document.createElement("th");
             th.textContent = header;
+            th.style.padding = "8px";
+            th.style.border = "1px solid black";
             headRow.appendChild(th);
         });
         tableHead.appendChild(headRow);
@@ -36,9 +41,20 @@ document.addEventListener("DOMContentLoaded", function () {
             headers.forEach(header => {
                 const td = document.createElement("td");
                 td.textContent = row[header] || "";
+                td.style.padding = "8px";
+                td.style.border = "1px solid black";
                 tr.appendChild(td);
             });
             tableBody.appendChild(tr);
         });
     }
+
+    // Filtrar datos en la tabla
+    document.getElementById("filterInput").addEventListener("keyup", function () {
+        const filter = this.value.toLowerCase();
+        const filteredData = tableData.filter(row =>
+            Object.values(row).some(value => value && value.toLowerCase().includes(filter))
+        );
+        displayTable(filteredData);
+    });
 });
