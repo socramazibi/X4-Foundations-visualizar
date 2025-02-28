@@ -28,5 +28,5 @@ Despues de tener tu partida en .CSV dirigite a esta web de este mismo repositori
 ```Para buscar naves destruidas en el buscador pon destruid.```
 
 
-Esta echo con varias IAs y ChatGPT, no tengo ni idea de programar lo justo para entretenerme, le hecha horas hasta que salio algo que me parecia sencillo y funcional.
+Esta echo con varias IAs y ChatGPT, no tengo ni idea de programar lo justo para entretenerme, le hechado algunas horas hasta que salio algo que me parecia sencillo y funcional y que me gustara.
 
