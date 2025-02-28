@@ -10,17 +10,22 @@
 </head>
 <body class="bg-gray-100 p-6">
     <div class="max-w-5xl mx-auto bg-white p-6 rounded-lg shadow-md">
-        <h1 class="text-2xl font-bold mb-4">XML a CSV Viewer</h1>
+        <h1 class="text-2xl font-bold mb-4 text-center">XML a CSV Viewer</h1>
 
+        <!-- Cargar archivo XML -->
         <input type="file" id="xmlFile" accept=".xml" class="border p-2 w-full mb-4">
 
-        <button id="convertBtn" class="bg-blue-500 text-white px-4 py-2 rounded-md">Convertir a CSV</button>
+        <!-- Botón para convertir -->
+        <button id="convertBtn" class="bg-blue-500 text-white px-4 py-2 rounded-md w-full">Convertir a CSV</button>
 
-        <a id="downloadLink" class="hidden mt-4 bg-green-500 text-white px-4 py-2 rounded-md" download="data.csv">Descargar CSV</a>
+        <!-- Botón para descargar CSV -->
+        <a id="downloadLink" class="hidden mt-4 bg-green-500 text-white px-4 py-2 rounded-md w-full text-center" download="datos.csv">Descargar CSV</a>
 
+        <!-- Campo de búsqueda -->
         <input type="text" id="filterInput" placeholder="Filtrar eventos..." class="border p-2 w-full mt-4">
 
-        <div class="overflow-auto mt-4" style="max-height: 400px;">
+        <!-- Tabla de resultados -->
+        <div class="overflow-auto mt-4 max-h-96">
             <table class="table-auto w-full border-collapse border border-gray-300">
                 <thead>
                     <tr class="bg-gray-200">
@@ -33,7 +38,9 @@
                         <th class="border p-2">Z</th>
                     </tr>
                 </thead>
-                <tbody id="csvTable"></tbody>
+                <tbody id="csvTable">
+                    <!-- Aquí se mostrarán los datos -->
+                </tbody>
             </table>
         </div>
     </div>
