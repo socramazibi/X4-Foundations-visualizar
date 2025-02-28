@@ -33,14 +33,20 @@
             margin-top: 10px;
         }
 
-        input {
+        .controls {
+            display: flex;
+            gap: 10px;
             margin-bottom: 10px;
-            padding: 5px;
+        }
+
+        input, select {
+            padding: 8px;
+            font-size: 16px;
         }
 
         .table-container {
             width: 90%;
-            height: 80vh;
+            height: 75vh;
             overflow: auto;
             background: var(--table-bg);
             border: 1px solid var(--border-color);
@@ -89,19 +95,23 @@
 <body>
     <h1>Visor de CSV</h1>
 
+    <!-- Botones de cambio de tema -->
     <div class="theme-buttons">
         <button class="light-mode" onclick="setTheme('light')">☀️ Claro</button>
         <button class="dark-mode" onclick="setTheme('dark')">🌙 Oscuro</button>
         <button class="blue-mode" onclick="setTheme('blue')">🌊 Azul Oscuro</button>
     </div>
 
-    <input type="file" id="csvFile" accept=".csv">
-    <input type="text" id="filterInput" placeholder="Buscar..." style="width: 300px;">
-    
+    <!-- Controles de selección -->
+    <div class="controls">
+        <input type="file" id="csvFile" accept=".csv">
+        <input type="text" id="filterInput" placeholder="Buscar..." style="width: 300px;">
         <select id="categoryFilter">
-        <option value="">Todas las categorías</option>
-    </select>
+            <option value="">Todas las categorías</option>
+        </select>
+    </div>
 
+    <!-- Tabla -->
     <div class="table-container">
         <table>
             <thead id="tableHead"></thead>
@@ -133,7 +143,6 @@
             localStorage.setItem('theme', theme);
         }
 
-        // Cargar el tema guardado
         document.addEventListener("DOMContentLoaded", function () {
             const savedTheme = localStorage.getItem('theme') || 'light';
             setTheme(savedTheme);
