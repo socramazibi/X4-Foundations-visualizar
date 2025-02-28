@@ -1,5 +1,6 @@
 document.addEventListener("DOMContentLoaded", function () {
     let tableData = []; // Guardamos los datos originales
+    let debounceTimeout; // Controla el tiempo de espera para la búsqueda
 
     document.getElementById("csvFile").addEventListener("change", function (event) {
         const file = event.target.files[0];
@@ -35,8 +36,9 @@ document.addEventListener("DOMContentLoaded", function () {
         });
         tableHead.appendChild(headRow);
 
-        // Crear filas
-        data.forEach(row => {
+        // Crear filas (máximo 500 filas para evitar bloqueos)
+        const maxRows = 500;
+        data.slice(0, maxRows).forEach(row => {
             const tr = document.createElement("tr");
             headers.forEach(header => {
                 const td = document.createElement("td");
@@ -49,12 +51,20 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
+    // Debounce para mejorar el rendimiento de la búsqueda
+    function debounce(func, delay) {
+        clearTimeout(debounceTimeout);
+        debounceTimeout = setTimeout(func, delay);
+    }
+
     // Filtrar datos en la tabla
-    document.getElementById("filterInput").addEventListener("keyup", function () {
-        const filter = this.value.toLowerCase();
-        const filteredData = tableData.filter(row =>
-            Object.values(row).some(value => value && value.toLowerCase().includes(filter))
-        );
-        displayTable(filteredData);
+    document.getElementById("filterInput").addEventListener("input", function () {
+        debounce(() => {
+            const filter = this.value.toLowerCase();
+            const filteredData = tableData.filter(row =>
+                Object.values(row).some(value => value && value.toLowerCase().includes(filter))
+            );
+            displayTable(filteredData);
+        }, 300); // 300ms de espera antes de buscar
     });
 });
