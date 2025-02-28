@@ -3,28 +3,72 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Visor de CSV</title>
+    <title>Visor CSV</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
     <script defer src="script.js"></script>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+            background-color: #f4f4f4;
+        }
+
+        h1 {
+            margin-top: 10px;
+        }
+
+        input {
+            margin-bottom: 10px;
+            padding: 5px;
+        }
+
+        .table-container {
+            width: 90%;
+            height: 80vh; /* Ajusta el alto de la tabla */
+            overflow: auto; /* Activa el scroll si hay muchas filas */
+            background: white;
+            border: 1px solid #ccc;
+            padding: 10px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 8px;
+            border: 1px solid black;
+            text-align: left;
+            white-space: nowrap; /* Evita que el texto sea muy largo */
+            max-width: 300px; /* Ajusta el tamaño de las columnas */
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        th {
+            background-color: #ddd;
+            position: sticky;
+            top: 0;
+        }
+    </style>
 </head>
-<body class="bg-gray-100 p-6">
-    <div class="max-w-6xl mx-auto bg-white p-6 rounded-lg shadow-md">
-        <h1 class="text-2xl font-bold mb-4 text-center">Visor de CSV</h1>
+<body>
+    <h1>Visor de CSV</h1>
+    <input type="file" id="csvFile" accept=".csv">
+    <input type="text" id="filterInput" placeholder="Buscar..." style="width: 300px;">
 
-        <!-- Subir archivo CSV -->
-        <input type="file" id="csvFile" accept=".csv" class="border p-2 w-full mb-4">
-
-        <!-- Campo de búsqueda -->
-        <input type="text" id="filterInput" placeholder="Buscar..." class="border p-2 w-full mt-4">
-
-        <!-- Tabla con barra de desplazamiento -->
-        <div class="overflow-auto mt-4 max-h-96">
-            <table class="table-auto w-full border-collapse border border-gray-300">
-                <thead id="tableHead" class="bg-gray-200"></thead>
-                <tbody id="tableBody"></tbody>
-            </table>
-        </div>
+    <div class="table-container">
+        <table>
+            <thead id="tableHead"></thead>
+            <tbody id="tableBody"></tbody>
+        </table>
     </div>
 </body>
 </html>
