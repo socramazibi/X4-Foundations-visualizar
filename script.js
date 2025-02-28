@@ -10,11 +10,31 @@ document.addEventListener("DOMContentLoaded", function () {
         reader.onload = function (e) {
             const csv = Papa.parse(e.target.result, { header: true });
             tableData = csv.data;
+            formatTimeColumn(tableData);
             populateCategoryFilter(tableData);
             displayTable(tableData);
         };
         reader.readAsText(file);
     });
+
+    function formatTimeColumn(data) {
+        data.forEach(row => {
+            if (row.Time) {
+                row.Time = convertirTiempoX4(parseFloat(row.Time)); // Convierte el tiempo
+            }
+        });
+    }
+
+    function convertirTiempoX4(segundos) {
+        if (isNaN(segundos)) return ""; // Manejar valores inválidos
+
+        const dias = Math.floor(segundos / 86400);
+        const horas = Math.floor((segundos % 86400) / 3600);
+        const minutos = Math.floor((segundos % 3600) / 60);
+        const segs = Math.floor(segundos % 60);
+
+        return `Día ${dias}, ${horas.toString().padStart(2, '0')}:${minutos.toString().padStart(2, '0')}:${segs.toString().padStart(2, '0')}`;
+    }
 
     function populateCategoryFilter(data) {
         const categoryFilter = document.getElementById("categoryFilter");
@@ -43,20 +63,15 @@ document.addEventListener("DOMContentLoaded", function () {
         headers.forEach(header => {
             const th = document.createElement("th");
             th.textContent = header;
-            th.style.padding = "8px";
-            th.style.border = "1px solid black";
             headRow.appendChild(th);
         });
         tableHead.appendChild(headRow);
 
-        const maxRows = 500;
-        data.slice(0, maxRows).forEach(row => {
+        data.forEach(row => {
             const tr = document.createElement("tr");
             headers.forEach(header => {
                 const td = document.createElement("td");
                 td.textContent = row[header] || "";
-                td.style.padding = "8px";
-                td.style.border = "1px solid black";
                 tr.appendChild(td);
             });
             tableBody.appendChild(tr);
@@ -73,11 +88,10 @@ document.addEventListener("DOMContentLoaded", function () {
             const filter = document.getElementById("filterInput").value.toLowerCase();
             const selectedCategory = document.getElementById("categoryFilter").value;
 
-            const filteredData = tableData.filter(row => {
-                const matchesText = Object.values(row).some(value => value && value.toLowerCase().includes(filter));
-                const matchesCategory = selectedCategory === "" || row.Category === selectedCategory;
-                return matchesText && matchesCategory;
-            });
+            const filteredData = tableData.filter(row =>
+                (selectedCategory === "" || row.Category === selectedCategory) &&
+                Object.values(row).some(value => value && value.toLowerCase().includes(filter))
+            );
 
             displayTable(filteredData);
         }, 300);
