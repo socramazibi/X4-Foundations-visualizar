@@ -1,9 +1,21 @@
 # X4-Foundations-visualizar
+
 X4 Foundations visualizar los savegame, primero pasa de XML a CSV.
 
 Puedes descargar un X4-Foundations_XML_CSV , estan los archivos y codigos y puedes descargar el .exe, ejecuta y selecciona un XML y lo pasara a CSV, en los savegames del juego estan comprimidos, descomprimelo primero, no modifica nada, pero haz copias de seguridad.
 
-Despues de tener tu partida en .CSV dirigite a esta web de este mismo repositorio https://socramazibi.github.io/X4-Foundations-visualizar/ y podras cargar tu archivo y visualizar con buscador, para busvar naves, destruidas (en el buscador pon destruid y apareceran las naves).
+![imagen](https://github.com/user-attachments/assets/782aa275-5ed8-44e1-bded-9029851bb77c)
+
+
+
+Despues de tener tu partida en .CSV dirigite a esta web de este mismo repositorio https://socramazibi.github.io/X4-Foundations-visualizar/ y podras cargar tu archivo y visualizar con buscador, para buscar naves, destruidas (en el buscador pon destruid y apareceran las naves, si pones destrido o destruida solo apareceran uno o otros escribiendo destruid apareceran todos, por lo visto en los log interpretan masculino y fenmenino).
+
+![imagen](https://github.com/user-attachments/assets/59d111fc-5c1f-4bca-b142-f68850a6aec4)
+
+![imagen](https://github.com/user-attachments/assets/a2ff9baa-6bf9-4565-991e-77240074b613)
+
+Para buscar naves destruidas en el buscador pon destruid.
+
 
 Esta echo con varias IAs y ChatGPT, no tengo ni idea de programar.
 
