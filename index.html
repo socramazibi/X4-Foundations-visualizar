@@ -3,44 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>XML a CSV Viewer</title>
+    <title>Visor de CSV</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
     <script defer src="script.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
 <body class="bg-gray-100 p-6">
-    <div class="max-w-5xl mx-auto bg-white p-6 rounded-lg shadow-md">
-        <h1 class="text-2xl font-bold mb-4 text-center">XML a CSV Viewer</h1>
+    <div class="max-w-6xl mx-auto bg-white p-6 rounded-lg shadow-md">
+        <h1 class="text-2xl font-bold mb-4 text-center">Visor de CSV</h1>
 
-        <!-- Cargar archivo XML -->
-        <input type="file" id="xmlFile" accept=".xml" class="border p-2 w-full mb-4">
-
-        <!-- Botón para convertir -->
-        <button id="convertBtn" class="bg-blue-500 text-white px-4 py-2 rounded-md w-full">Convertir a CSV</button>
-
-        <!-- Botón para descargar CSV -->
-        <a id="downloadLink" class="hidden mt-4 bg-green-500 text-white px-4 py-2 rounded-md w-full text-center" download="datos.csv">Descargar CSV</a>
+        <!-- Subir archivo CSV -->
+        <input type="file" id="csvFile" accept=".csv" class="border p-2 w-full mb-4">
 
         <!-- Campo de búsqueda -->
-        <input type="text" id="filterInput" placeholder="Filtrar eventos..." class="border p-2 w-full mt-4">
+        <input type="text" id="filterInput" placeholder="Buscar..." class="border p-2 w-full mt-4">
 
-        <!-- Tabla de resultados -->
+        <!-- Tabla con barra de desplazamiento -->
         <div class="overflow-auto mt-4 max-h-96">
             <table class="table-auto w-full border-collapse border border-gray-300">
-                <thead>
-                    <tr class="bg-gray-200">
-                        <th class="border p-2">Time</th>
-                        <th class="border p-2">Category</th>
-                        <th class="border p-2">Title</th>
-                        <th class="border p-2">Text</th>
-                        <th class="border p-2">X</th>
-                        <th class="border p-2">Y</th>
-                        <th class="border p-2">Z</th>
-                    </tr>
-                </thead>
-                <tbody id="csvTable">
-                    <!-- Aquí se mostrarán los datos -->
-                </tbody>
+                <thead id="tableHead" class="bg-gray-200"></thead>
+                <tbody id="tableBody"></tbody>
             </table>
         </div>
     </div>
