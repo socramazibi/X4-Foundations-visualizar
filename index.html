@@ -1,152 +1,102 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>X4 Foundations Visor CSV</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
-    <script defer src="script.js"></script>
-    <style>
-        :root {
-            --background: #f4f4f4;
-            --text-color: #000;
-            --table-bg: white;
-            --header-bg: #ddd;
-            --border-color: #ccc;
-        }
+document.addEventListener("DOMContentLoaded", function () {
+    let tableData = [];
+    let debounceTimeout;
 
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            height: 100vh;
-            overflow: hidden;
-            background-color: var(--background);
-            color: var(--text-color);
-            transition: background 0.3s, color 0.3s;
-        }
+    document.getElementById("csvFile").addEventListener("change", function (event) {
+        const file = event.target.files[0];
+        if (!file) return;
 
-        h1 {
-            margin-top: 10px;
-        }
+        const reader = new FileReader();
+        reader.onload = function (e) {
+            const csv = Papa.parse(e.target.result, { header: true });
+            tableData = csv.data;
+            formatTimeColumn(tableData);
+            populateCategoryFilter(tableData);
+            displayTable(tableData);
+        };
+        reader.readAsText(file);
+    });
 
-        .controls {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 10px;
-        }
-
-        input, select {
-            padding: 8px;
-            font-size: 16px;
-        }
-
-        .table-container {
-            width: 90%;
-            height: 75vh;
-            overflow: auto;
-            background: var(--table-bg);
-            border: 1px solid var(--border-color);
-            padding: 10px;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        th, td {
-            padding: 8px;
-            border: 1px solid black;
-            text-align: left;
-            white-space: nowrap;
-            max-width: 300px;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        th {
-            background-color: var(--header-bg);
-            position: sticky;
-            top: 0;
-        }
-
-        .theme-buttons {
-            margin-bottom: 10px;
-        }
-
-        .theme-buttons button {
-            margin: 5px;
-            padding: 8px;
-            border: none;
-            cursor: pointer;
-            border-radius: 5px;
-            font-weight: bold;
-        }
-
-        .light-mode { background: #fff; color: #000; border: 1px solid #ccc; }
-        .dark-mode { background: #222; color: #fff; border: 1px solid #666; }
-        .blue-mode { background: #1b2a4e; color: #fff; border: 1px solid #3b5998; }
-    </style>
-</head>
-<body>
-    <h1>Visor de CSV</h1>
-
-    <!-- Botones de cambio de tema -->
-    <div class="theme-buttons">
-        <button class="light-mode" onclick="setTheme('light')">☀️ Claro</button>
-        <button class="dark-mode" onclick="setTheme('dark')">🌙 Oscuro</button>
-        <button class="blue-mode" onclick="setTheme('blue')">🌊 Azul Oscuro</button>
-    </div>
-
-    <!-- Controles de selección -->
-    <div class="controls">
-        <input type="file" id="csvFile" accept=".csv">
-        <input type="text" id="filterInput" placeholder="Buscar..." style="width: 300px;">
-        <select id="categoryFilter">
-            <option value="">Todas las categorías</option>
-        </select>
-    </div>
-
-    <!-- Tabla -->
-    <div class="table-container">
-        <table>
-            <thead id="tableHead"></thead>
-            <tbody id="tableBody"></tbody>
-        </table>
-    </div>
-
-    <script>
-        function setTheme(theme) {
-            if (theme === 'light') {
-                document.documentElement.style.setProperty('--background', '#f4f4f4');
-                document.documentElement.style.setProperty('--text-color', '#000');
-                document.documentElement.style.setProperty('--table-bg', '#fff');
-                document.documentElement.style.setProperty('--header-bg', '#ddd');
-                document.documentElement.style.setProperty('--border-color', '#ccc');
-            } else if (theme === 'dark') {
-                document.documentElement.style.setProperty('--background', '#222');
-                document.documentElement.style.setProperty('--text-color', '#fff');
-                document.documentElement.style.setProperty('--table-bg', '#333');
-                document.documentElement.style.setProperty('--header-bg', '#444');
-                document.documentElement.style.setProperty('--border-color', '#666');
-            } else if (theme === 'blue') {
-                document.documentElement.style.setProperty('--background', '#1b2a4e');
-                document.documentElement.style.setProperty('--text-color', '#fff');
-                document.documentElement.style.setProperty('--table-bg', '#2a3d66');
-                document.documentElement.style.setProperty('--header-bg', '#3b5998');
-                document.documentElement.style.setProperty('--border-color', '#3b5998');
+    function formatTimeColumn(data) {
+        data.forEach(row => {
+            if (row.Time) {
+                row.Time = convertirTiempoX4(parseFloat(row.Time)); // Convierte el tiempo
             }
-            localStorage.setItem('theme', theme);
-        }
-
-        document.addEventListener("DOMContentLoaded", function () {
-            const savedTheme = localStorage.getItem('theme') || 'light';
-            setTheme(savedTheme);
         });
-    </script>
-</body>
-</html>
+    }
+
+    function convertirTiempoX4(segundos) {
+        if (isNaN(segundos)) return ""; // Manejar valores inválidos
+
+        const dias = Math.floor(segundos / 86400);
+        const horas = Math.floor((segundos % 86400) / 3600);
+        const minutos = Math.floor((segundos % 3600) / 60);
+        const segs = Math.floor(segundos % 60);
+
+        return `Día ${dias}, ${horas.toString().padStart(2, '0')}:${minutos.toString().padStart(2, '0')}:${segs.toString().padStart(2, '0')}`;
+    }
+
+    function populateCategoryFilter(data) {
+        const categoryFilter = document.getElementById("categoryFilter");
+        categoryFilter.innerHTML = '<option value="">Todas las categorías</option>';
+
+        const categories = new Set(data.map(row => row.Category).filter(Boolean));
+        categories.forEach(category => {
+            const option = document.createElement("option");
+            option.value = category;
+            option.textContent = category;
+            categoryFilter.appendChild(option);
+        });
+    }
+
+    function displayTable(data) {
+        const tableHead = document.getElementById("tableHead");
+        const tableBody = document.getElementById("tableBody");
+
+        tableHead.innerHTML = "";
+        tableBody.innerHTML = "";
+
+        if (data.length === 0) return;
+
+        const headers = Object.keys(data[0]);
+        const headRow = document.createElement("tr");
+        headers.forEach(header => {
+            const th = document.createElement("th");
+            th.textContent = header;
+            headRow.appendChild(th);
+        });
+        tableHead.appendChild(headRow);
+
+        data.forEach(row => {
+            const tr = document.createElement("tr");
+            headers.forEach(header => {
+                const td = document.createElement("td");
+                td.textContent = row[header] || "";
+                tr.appendChild(td);
+            });
+            tableBody.appendChild(tr);
+        });
+    }
+
+    function debounce(func, delay) {
+        clearTimeout(debounceTimeout);
+        debounceTimeout = setTimeout(func, delay);
+    }
+
+    function filterTable() {
+        debounce(() => {
+            const filter = document.getElementById("filterInput").value.toLowerCase();
+            const selectedCategory = document.getElementById("categoryFilter").value;
+
+            const filteredData = tableData.filter(row =>
+                (selectedCategory === "" || row.Category === selectedCategory) &&
+                Object.values(row).some(value => value && value.toLowerCase().includes(filter))
+            );
+
+            displayTable(filteredData);
+        }, 300);
+    }
+
+    document.getElementById("filterInput").addEventListener("input", filterTable);
+    document.getElementById("categoryFilter").addEventListener("change", filterTable);
+});
