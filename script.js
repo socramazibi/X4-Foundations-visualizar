@@ -8,23 +8,28 @@ document.getElementById("convertBtn").addEventListener("click", function () {
 
     const reader = new FileReader();
     reader.onload = function (event) {
-        const xml = event.target.result;
-        const json = JSON.parse(xml2json(xml, { compact: true, spaces: 2 }));
+        const parser = new DOMParser();
+        const xml = parser.parseFromString(event.target.result, "text/xml");
+        const entries = xml.getElementsByTagName("entry");
 
-        const entries = json.root.entry || []; 
+        if (entries.length === 0) {
+            alert("No se encontraron entradas en el XML.");
+            return;
+        }
+
         const csvData = [["Time", "Category", "Title", "Text", "X", "Y", "Z"]];
 
-        entries.forEach(entry => {
+        for (let entry of entries) {
             csvData.push([
-                entry._attributes?.time || "",
-                entry._attributes?.category || "",
-                entry._attributes?.title || "",
-                entry._attributes?.text || "",
-                entry._attributes?.x || "",
-                entry._attributes?.y || "",
-                entry._attributes?.z || ""
+                entry.getAttribute("time") || "",
+                entry.getAttribute("category") || "",
+                entry.getAttribute("title") || "",
+                entry.getAttribute("text") || "",
+                entry.getAttribute("x") || "",
+                entry.getAttribute("y") || "",
+                entry.getAttribute("z") || ""
             ]);
-        });
+        }
 
         // Convertir a CSV
         const csvString = Papa.unparse(csvData);
