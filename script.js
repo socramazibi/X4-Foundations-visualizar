@@ -1,18 +1,26 @@
 document.addEventListener("DOMContentLoaded", function () {
+    // Estado global
     let tableData = [];
     let debounceTimeout;
+    let sortOrderTime = 1;
 
+    // Event Listeners
     document.getElementById("csvFile").addEventListener("change", function (event) {
         const file = event.target.files[0];
         if (!file) return;
 
         const reader = new FileReader();
         reader.onload = function (e) {
-            const csv = Papa.parse(e.target.result, { header: true });
-            tableData = csv.data;
-            formatTimeColumn(tableData);
-            populateCategoryFilter(tableData);
-            displayTable(tableData);
+            try {
+                const csv = Papa.parse(e.target.result, { header: true });
+                tableData = csv.data;
+                formatTimeColumn(tableData);
+                populateCategoryFilter(tableData);
+                displayTable(tableData);
+            } catch (error) {
+                console.error('Error al procesar el archivo:', error);
+                alert('Error al procesar el archivo');
+            }
         };
         reader.readAsText(file);
     });
@@ -20,13 +28,13 @@ document.addEventListener("DOMContentLoaded", function () {
     function formatTimeColumn(data) {
         data.forEach(row => {
             if (row.Time) {
-                row.Time = convertirTiempoX4(parseFloat(row.Time)); // Convierte el tiempo
+                row.Time = convertirTiempoX4(parseFloat(row.Time));
             }
         });
     }
 
     function convertirTiempoX4(segundos) {
-        if (isNaN(segundos)) return ""; // Manejar valores inválidos
+        if (isNaN(segundos)) return "";
 
         const dias = Math.floor(segundos / 86400);
         const horas = Math.floor((segundos % 86400) / 3600);
@@ -60,11 +68,42 @@ document.addEventListener("DOMContentLoaded", function () {
 
         const headers = Object.keys(data[0]);
         const headRow = document.createElement("tr");
+        
         headers.forEach(header => {
             const th = document.createElement("th");
             th.textContent = header;
+            if (header === 'Time') {
+                th.addEventListener('click', () => {
+                    sortOrderTime *= -1;
+                    const sortedData = [...data].sort((a, b) => {
+                        // Extraer días y tiempo
+                        const [diaA, horaA] = a.Time.split(', ');
+                        const [diaB, horaB] = b.Time.split(', ');
+                        
+                        // Obtener el número de día
+                        const numDiaA = parseInt(diaA.replace('Día ', ''));
+                        const numDiaB = parseInt(diaB.replace('Día ', ''));
+                        
+                        // Si los días son diferentes, ordenar por días
+                        if (numDiaA !== numDiaB) {
+                            return sortOrderTime * (numDiaA - numDiaB);
+                        }
+                        
+                        // Si los días son iguales, convertir horas a segundos y comparar
+                        const [horasA, minutosA, segundosA] = horaA.split(':').map(Number);
+                        const [horasB, minutosB, segundosB] = horaB.split(':').map(Number);
+                        
+                        const tiempoA = horasA * 3600 + minutosA * 60 + segundosA;
+                        const tiempoB = horasB * 3600 + minutosB * 60 + segundosB;
+                        
+                        return sortOrderTime * (tiempoA - tiempoB);
+                    });
+                    displayTable(sortedData);
+                });
+            }
             headRow.appendChild(th);
         });
+
         tableHead.appendChild(headRow);
 
         data.forEach(row => {
@@ -78,25 +117,35 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    function debounce(func, delay) {
-        clearTimeout(debounceTimeout);
-        debounceTimeout = setTimeout(func, delay);
-    }
-
     function filterTable() {
-        debounce(() => {
-            const filter = document.getElementById("filterInput").value.toLowerCase();
-            const selectedCategory = document.getElementById("categoryFilter").value;
+        const filter = document.getElementById("filterInput").value.toLowerCase();
+        const selectedCategory = document.getElementById("categoryFilter").value;
 
-            const filteredData = tableData.filter(row =>
-                (selectedCategory === "" || row.Category === selectedCategory) &&
-                Object.values(row).some(value => value && value.toLowerCase().includes(filter))
-            );
+        const filteredData = tableData.filter(row =>
+            (selectedCategory === "" || row.Category === selectedCategory) &&
+            Object.values(row).some(value => 
+                value && value.toString().toLowerCase().includes(filter)
+            )
+        );
 
-            displayTable(filteredData);
-        }, 300);
+        displayTable(filteredData);
     }
 
+    // Event listeners para filtrado
     document.getElementById("filterInput").addEventListener("input", filterTable);
     document.getElementById("categoryFilter").addEventListener("change", filterTable);
+
+    // Función para cambiar el tema
+    window.setTheme = function(theme) {
+        document.body.className = theme + '-mode';
+        localStorage.setItem('theme', theme);
+    };
+
+    // Aplicar tema guardado al cargar
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme) {
+        setTheme(savedTheme);
+    } else {
+        setTheme('light'); // tema por defecto
+    }
 });

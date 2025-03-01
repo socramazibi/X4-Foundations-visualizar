@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Visualizador de savegames en CSV para X4 Foundations">
+    <meta name="keywords" content="X4 Foundations, CSV, savegames, visualizador">
     <title>X4 Foundations visualizar savegames en CSV online</title>
     <link rel="stylesheet" href="styles.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
@@ -11,14 +13,12 @@
 <body>
     <h1>X4 Foundations visualizar savegames en CSV online</h1>
 
-    <!-- Botones de cambio de tema -->
     <div class="theme-buttons">
-        <button class="light-mode" onclick="setTheme('light')">☀️ Claro</button>
-        <button class="dark-mode" onclick="setTheme('dark')">🌙 Oscuro</button>
-        <button class="blue-mode" onclick="setTheme('blue')">🌊 Azul Oscuro</button>
+        <button onclick="setTheme('light')" class="light-mode">☀️ Claro</button>
+        <button onclick="setTheme('dark')" class="dark-mode">🌙 Oscuro</button>
+        <button onclick="setTheme('blue')" class="blue-mode">🌊 Azul Oscuro</button>
     </div>
 
-    <!-- Controles de selección -->
     <div class="controls">
         <input type="file" id="csvFile" accept=".csv">
         <input type="text" id="filterInput" placeholder="Buscar..." style="width: 300px;">
@@ -27,7 +27,6 @@
         </select>
     </div>
 
-    <!-- Tabla -->
     <div class="table-container">
         <table id="dataTable">
             <thead id="tableHead"></thead>

@@ -13,26 +13,31 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    height: 100vh;
-    overflow: hidden;
+    min-height: 100vh;
     background-color: var(--background);
     color: var(--text-color);
     transition: background 0.3s, color 0.3s;
 }
 
 h1 {
-    margin-top: 10px;
+    margin: 10px 0;
+    text-align: center;
 }
 
 .controls {
     display: flex;
     gap: 10px;
     margin-bottom: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
 }
 
-.controls input, .controls select {
+.controls input, 
+.controls select {
     padding: 8px;
     font-size: 16px;
+    border-radius: 5px;
+    border: 1px solid var(--border-color);
 }
 
 .table-container {
@@ -42,6 +47,7 @@ h1 {
     background: var(--table-bg);
     border: 1px solid var(--border-color);
     padding: 10px;
+    border-radius: 5px;
 }
 
 table {
@@ -51,7 +57,7 @@ table {
 
 th, td {
     padding: 8px;
-    border: 1px solid black;
+    border: 1px solid var(--border-color);
     text-align: left;
     white-space: nowrap;
     max-width: 300px;
@@ -63,6 +69,7 @@ th {
     background-color: var(--header-bg);
     position: sticky;
     top: 0;
+    cursor: pointer;
 }
 
 .theme-buttons {
@@ -71,13 +78,89 @@ th {
 
 .theme-buttons button {
     margin: 5px;
-    padding: 8px;
+    padding: 8px 16px;
     border: none;
-    cursor: pointer;
     border-radius: 5px;
+    cursor: pointer;
     font-weight: bold;
 }
 
-.light-mode { background: #fff; color: #000; border: 1px solid #ccc; }
-.dark-mode { background: #222; color: #fff; border: 1px solid #666; }
-.blue-mode { background: #1b2a4e; color: #fff; border: 1px solid #3b5998; }
+/* Estilos de tema */
+body.light-mode {
+    --background: #f4f4f4;
+    --text-color: #000;
+    --table-bg: white;
+    --header-bg: #ddd;
+    --border-color: #ccc;
+}
+
+body.dark-mode {
+    --background: #222;
+    --text-color: #fff;
+    --table-bg: #333;
+    --header-bg: #444;
+    --border-color: #666;
+}
+
+body.blue-mode {
+    --background: #1b2a4e;
+    --text-color: #fff;
+    --table-bg: #2a3f6d;
+    --header-bg: #34508a;
+    --border-color: #3b5998;
+}
+
+.theme-buttons button.light-mode {
+    background: #fff;
+    color: #000;
+    border: 1px solid #ccc;
+}
+
+.theme-buttons button.dark-mode {
+    background: #222;
+    color: #fff;
+    border: 1px solid #666;
+}
+
+.theme-buttons button.blue-mode {
+    background: #1b2a4e;
+    color: #fff;
+    border: 1px solid #3b5998;
+}
+
+/* Scrollbar personalizado */
+.table-container::-webkit-scrollbar {
+    width: 12px;
+    height: 12px;
+}
+
+.table-container::-webkit-scrollbar-track {
+    background: var(--background);
+}
+
+.table-container::-webkit-scrollbar-thumb {
+    background: var(--border-color);
+    border-radius: 6px;
+}
+
+.table-container::-webkit-scrollbar-thumb:hover {
+    background: var(--header-bg);
+}
+
+/* Media Queries */
+@media (max-width: 768px) {
+    .table-container {
+        width: 95%;
+        height: 70vh;
+    }
+    
+    .controls {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .controls input,
+    .controls select {
+        width: 100%;
+    }
+}
