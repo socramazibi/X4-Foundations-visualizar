@@ -25,7 +25,7 @@ Despues de tener tu partida en .CSV dirigite a esta web de este mismo repositori
 
 ![imagen](https://github.com/user-attachments/assets/a2ff9baa-6bf9-4565-991e-77240074b613)
 
-```Para buscar naves destruidas en el buscador pon destruid.```
+```Para buscar naves destruidas en el buscador pon destruid. La columna Time si la presionas ordena la fecha y hora```
 
 
 Esta echo con varias IAs y ChatGPT, no tengo ni idea de programar lo justo para entretenerme, le hechado algunas horas hasta que salio algo que me parecia sencillo y funcional y que me gustara.
