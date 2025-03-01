@@ -23,6 +23,7 @@ Enlace a X4-Foundations-visualizar.
 
 ```https://socramazibi.github.io/X4-Foundations-visualizar```
 <p>Visita la web <a href="https://socramazibi.github.io/X4-Foundations-visualizar/" target="_blank" rel="noopener noreferrer">X4 Foundations visualizar CSV</a>.</p>
+
 ![imagen](https://github.com/user-attachments/assets/59d111fc-5c1f-4bca-b142-f68850a6aec4)
 
 ![imagen](https://github.com/user-attachments/assets/a2ff9baa-6bf9-4565-991e-77240074b613)
