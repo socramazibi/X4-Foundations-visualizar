@@ -90,6 +90,17 @@
         .light-mode { background: #fff; color: #000; border: 1px solid #ccc; }
         .dark-mode { background: #222; color: #fff; border: 1px solid #666; }
         .blue-mode { background: #1b2a4e; color: #fff; border: 1px solid #3b5998; }
+
+        /* Nueva clase para la columna Text */
+        td.text-column {
+            white-space: normal;  /* Permite que el texto haga salto de línea */
+            word-wrap: break-word; /* Rompe las palabras largas para ajustarlas a la celda */
+            max-width: 500px;  /* Limita el ancho máximo para evitar que la columna sea demasiado ancha */
+            word-break: break-all; /* Rompe el texto de manera que no se desborde */
+            padding: 8px;
+            text-align: left;
+            vertical-align: top; /* Alinea el texto en la parte superior de la celda */
+        }
     </style>
 </head>
 <body>
