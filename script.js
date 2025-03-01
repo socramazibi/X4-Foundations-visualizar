@@ -2,6 +2,7 @@ document.addEventListener("DOMContentLoaded", function () {
     let tableData = [];
     let debounceTimeout;
 
+    // Subir el archivo CSV
     document.getElementById("csvFile").addEventListener("change", function (event) {
         const file = event.target.files[0];
         if (!file) return;
@@ -17,6 +18,7 @@ document.addEventListener("DOMContentLoaded", function () {
         reader.readAsText(file);
     });
 
+    // Función para formatear el tiempo
     function formatTimeColumn(data) {
         data.forEach(row => {
             if (row.Time) {
@@ -36,6 +38,7 @@ document.addEventListener("DOMContentLoaded", function () {
         return `Día ${dias}, ${horas.toString().padStart(2, '0')}:${minutos.toString().padStart(2, '0')}:${segs.toString().padStart(2, '0')}`;
     }
 
+    // Poblamos el filtro de categorías
     function populateCategoryFilter(data) {
         const categoryFilter = document.getElementById("categoryFilter");
         categoryFilter.innerHTML = '<option value="">Todas las categorías</option>';
@@ -49,6 +52,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
+    // Mostrar los datos en la tabla
     function displayTable(data) {
         const tableHead = document.getElementById("tableHead");
         const tableBody = document.getElementById("tableBody");
@@ -63,7 +67,7 @@ document.addEventListener("DOMContentLoaded", function () {
         headers.forEach(header => {
             const th = document.createElement("th");
             th.textContent = header;
-            th.classList.add(header === "Text" ? "text-column" : ""); // Aplicar la clase 'text-column' a la columna 'Text'
+            th.classList.add(header === "Text" ? "text-column" : ""); // Añadir clase para la columna de texto
             headRow.appendChild(th);
         });
         tableHead.appendChild(headRow);
@@ -73,18 +77,20 @@ document.addEventListener("DOMContentLoaded", function () {
             headers.forEach(header => {
                 const td = document.createElement("td");
                 td.textContent = row[header] || "";
-                td.classList.add(header === "Text" ? "text-column" : ""); // Aplicar la clase 'text-column' a la columna 'Text'
+                td.classList.add(header === "Text" ? "text-column" : ""); // Añadir clase para la columna de texto
                 tr.appendChild(td);
             });
             tableBody.appendChild(tr);
         });
     }
 
+    // Función para debouncing en los filtros
     function debounce(func, delay) {
         clearTimeout(debounceTimeout);
         debounceTimeout = setTimeout(func, delay);
     }
 
+    // Filtrar la tabla
     function filterTable() {
         debounce(() => {
             const filter = document.getElementById("filterInput").value.toLowerCase();
