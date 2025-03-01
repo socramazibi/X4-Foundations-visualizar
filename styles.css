@@ -1,34 +1,12 @@
-/* Definir clases de las columnas */
-.column-1 {
-    width: 80px;
-}
-.column-2 {
-    width: 20px;
-}
-.column-3 {
-    width: 80px;
-}
-.column-4 {
-    width: 400px;
-}
-.column-5 {
-    width: 100px;
-}
-.column-6 {
-    width: 100px;
-}
-.column-7 {
-    width: 100px;
+/* Variables de colores */
+:root {
+    --background: #f4f4f4;
+    --text-color: #000;
+    --table-bg: white;
+    --header-bg: #ddd;
+    --border-color: #ccc;
 }
 
-/* Estilo para la columna de texto */
-.text-column {
-    max-width: 500px;
-    word-wrap: break-word;
-    white-space: normal;
-}
-
-/* Estilo general */
 body {
     font-family: Arial, sans-serif;
     margin: 0;
@@ -36,53 +14,122 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    height: 100vh;
-    overflow: hidden;
-    background-color: #f4f4f4;
-    color: #000;
+    min-height: 100vh;
+    background-color: var(--background);
+    color: var(--text-color);
+    transition: background 0.3s, color 0.3s;
 }
 
 h1 {
-    margin-top: 10px;
+    margin: 10px 0;
+    text-align: center;
 }
 
+/* Controles */
 .controls {
     display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
     gap: 10px;
     margin-bottom: 10px;
+    width: 90%;
 }
 
 input, select {
     padding: 8px;
     font-size: 16px;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
 }
 
-.table-container {
-    width: 90%;
-    height: 75vh;
-    overflow: auto;
-    background: #fff;
-    border: 1px solid #ccc;
+/* Botones de tema */
+.theme-buttons {
+    display: flex;
+    gap: 5px;
+    margin-bottom: 10px;
+}
+
+.theme-buttons button {
+    padding: 8px 12px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
+.light-mode { background: #fff; color: #000; border: 1px solid #ccc; }
+.dark-mode { background: #222; color: #fff; border: 1px solid #666; }
+.blue-mode { background: #1b2a4e; color: #fff; border: 1px solid #3b5998; }
+
+/* Contenedor de la tabla */
+.table-wrapper {
+    width: 100%;
+    overflow-x: auto; /* Permite desplazamiento horizontal en móviles */
     padding: 10px;
 }
 
+/* Contenedor interno de la tabla */
+.table-container {
+    width: 90%;
+    max-width: 1000px;
+    overflow: auto;
+    background: var(--table-bg);
+    border: 1px solid var(--border-color);
+    padding: 10px;
+}
+
+/* Tabla */
 table {
     width: 100%;
     border-collapse: collapse;
+    min-width: 600px; /* Evita que la tabla se comprima demasiado */
 }
 
 th, td {
-    padding: 8px;
-    border: 1px solid black;
+    padding: 10px;
+    border: 1px solid var(--border-color);
     text-align: left;
     white-space: nowrap;
-    max-width: 300px;
     overflow: hidden;
     text-overflow: ellipsis;
 }
 
+/* Encabezados de tabla */
 th {
-    background-color: #ddd;
+    background-color: var(--header-bg);
     position: sticky;
     top: 0;
+}
+
+/* Columnas responsivas */
+.column-1 { width: 150px; }
+.column-2 { width: 200px; }
+.column-3 { width: 250px; }
+.column-4 { width: 300px; }
+.column-5 { width: 180px; }
+.column-6 { width: 200px; }
+.column-7 { width: 220px; }
+
+/* Ajuste para la columna "Text" */
+.text-column {
+    max-width: 400px;
+    word-wrap: break-word;
+    white-space: normal;
+}
+
+/* Media Queries para móviles */
+@media (max-width: 768px) {
+    .controls {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .table-container {
+        width: 100%;
+    }
+
+    th, td {
+        font-size: 14px;
+        padding: 6px;
+    }
 }
