@@ -71,6 +71,12 @@ document.addEventListener("DOMContentLoaded", function () {
             const tr = document.createElement("tr");
             headers.forEach(header => {
                 const td = document.createElement("td");
+
+                // Si la columna es "Text", agregamos la clase 'text-column'
+                if (header === "Text") {
+                    td.classList.add("text-column");
+                }
+
                 td.textContent = row[header] || "";
                 tr.appendChild(td);
             });
