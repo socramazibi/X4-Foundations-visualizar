@@ -67,7 +67,12 @@ document.addEventListener("DOMContentLoaded", function () {
         headers.forEach(header => {
             const th = document.createElement("th");
             th.textContent = header;
-            th.classList.add(header === "Text" ? "text-column" : ""); // Añadir clase para la columna de texto
+
+            // Solo añadir la clase si la columna es 'Text'
+            if (header === "Text") {
+                th.classList.add("text-column");
+            }
+
             headRow.appendChild(th);
         });
         tableHead.appendChild(headRow);
@@ -77,7 +82,12 @@ document.addEventListener("DOMContentLoaded", function () {
             headers.forEach(header => {
                 const td = document.createElement("td");
                 td.textContent = row[header] || "";
-                td.classList.add(header === "Text" ? "text-column" : ""); // Añadir clase para la columna de texto
+
+                // Solo añadir la clase si la columna es 'Text'
+                if (header === "Text") {
+                    td.classList.add("text-column");
+                }
+
                 tr.appendChild(td);
             });
             tableBody.appendChild(tr);
