@@ -48,6 +48,7 @@ input, select {
 table {
     width: 100%;
     border-collapse: collapse;
+    table-layout: fixed; /* Hace que las columnas tengan un ancho fijo */
 }
 
 th, td {
@@ -55,9 +56,8 @@ th, td {
     border: 1px solid black;
     text-align: left;
     white-space: nowrap;
-    max-width: 300px;
-    overflow: hidden;
     text-overflow: ellipsis;
+    overflow: hidden;
 }
 
 /* Establecer el ancho de las columnas en el encabezado */
