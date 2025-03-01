@@ -9,7 +9,7 @@ Puedes descargar un X4-Foundations_XML_CSV , están los archivos y códigos y pu
 Todo comprimido en .zip, descomprimir en una carpeta para poder ejecutar.), ejecuta el X4_FOUNDATIONS_XML_CSV.exe y selecciona un .XML o un .gz y lo pasará a CSV, en los savegames del juego están comprimidos, ~~descomprímelo primero~~, no modifica nada,
 pero haz copias de seguridad. (Todo el código está en el repositorio)
 
-``` Ahora puede trabajar con los 2 tipos de archivos .gz o .xml descomprime (automáticamente él .gz) ```
+``` Ahora puede trabajar con los 2 tipos de archivos .gz o .xml descomprime automáticamente él archivo .gz ```
 
 En esta ruta ```C:\Users\NOMBRE_USUARIO\Documents\Egosoft\X4\99866623\save``` suelen estar los Savegames, recuerda descomprimir.
 
