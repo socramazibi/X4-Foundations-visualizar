@@ -1,13 +1,15 @@
 # X4-Foundations-visualizar
 
-```Todo esta hecho con IAs y ChatGPT```
+```Todo está hecho con IAs y ChatGPT```
 
 ## X4 Foundations visualizar los savegame, primero pasa de XML a CSV.
 
-Puedes descargar un X4-Foundations_XML_CSV , estan los archivos y codigos y puedes descargar el (X4_FOUNDATIONS_XML_CSV.exe "_internal" es una (carpeta necesita para funcionar)
+Puedes descargar un X4-Foundations_XML_CSV , están los archivos y códigos y puedes descargar el (X4_FOUNDATIONS_XML_CSV.exe "_internal" es una (carpeta necesita para funcionar)
 
-Todo comprimido en .rar, descomprimir para poder ejecutar.), ejecuta el X4_FOUNDATIONS_XML_CSV.exe y selecciona un XML y lo pasara a CSV, en los savegames del juego estan comprimidos, descomprimelo primero, no modifica nada,
-pero haz copias de seguridad. (Todo el codigo esta en el repositorio)
+Todo comprimido en .zip, descomprimir en una carpeta para poder ejecutar.), ejecuta el X4_FOUNDATIONS_XML_CSV.exe y selecciona un .XML o un .gz y lo pasará a CSV, en los savegames del juego están comprimidos, ~~descomprímelo primero~~, no modifica nada,
+pero haz copias de seguridad. (Todo el código está en el repositorio)
+
+``` Ahora puede trabajar con los 2 tipos de archivos .gz o .xml descomprime (automáticamente él .gz) ```
 
 En esta ruta ```C:\Users\NOMBRE_USUARIO\Documents\Egosoft\X4\99866623\save``` suelen estar los Savegames, recuerda descomprimir.
 
@@ -15,9 +17,9 @@ En esta ruta ```C:\Users\NOMBRE_USUARIO\Documents\Egosoft\X4\99866623\save``` su
 
 
 
-Despues de tener tu partida en .CSV dirigite a esta web de este mismo repositorio y podras cargar tu archivo y visualizar con buscador, para buscar naves,destruidas (en el buscador pon destruid y apareceran las naves, si pones destrido o destruida solo apareceran uno o otros escribiendo destruid apareceran todos, por lo visto en los log interpretan masculino y fenmenino).
+Después de tener tu partida en .CSV dirigite a esta web de este mismo repositorio y podrás cargar tu archivo y visualizar con buscador, para buscar naves, destruidas (en el buscador pon destruid y aparecerán las naves, si pones destruid o destruida solo aparecerán uno u otros escribiendo destruid aparecerán todos, por lo visto en los log interpretan masculino y femenino).
 
-<p>Enlace a <a href="https://socramazibi.github.io/X4-Foundations-visualizar" target="_blank">X4-Foundations-visualizar</a>.</p>
+Enlace a X4-Foundations-visualizar.
 
 ```https://socramazibi.github.io/X4-Foundations-visualizar```
 
@@ -28,5 +30,4 @@ Despues de tener tu partida en .CSV dirigite a esta web de este mismo repositori
 ```Para buscar naves destruidas en el buscador pon destruid. La columna Time si la presionas ordena la fecha y hora```
 
 
-Esta echo con varias IAs y ChatGPT, no tengo ni idea de programar lo justo para entretenerme, le hechado algunas horas hasta que salio algo que me parecia sencillo y funcional y que me gustara.
-
+Esta hecho con varias IAs y ChatGPT, no tengo ni idea de programar lo justo para entretenerme, le echado algunas horas hasta que salió algo que me parecía sencillo y funcional y que me gustara.
