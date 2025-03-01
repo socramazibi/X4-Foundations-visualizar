@@ -63,6 +63,7 @@ document.addEventListener("DOMContentLoaded", function () {
         headers.forEach(header => {
             const th = document.createElement("th");
             th.textContent = header;
+            th.classList.add(header === "Text" ? "text-column" : ""); // Aplicar la clase 'text-column' a la columna 'Text'
             headRow.appendChild(th);
         });
         tableHead.appendChild(headRow);
@@ -71,45 +72,12 @@ document.addEventListener("DOMContentLoaded", function () {
             const tr = document.createElement("tr");
             headers.forEach(header => {
                 const td = document.createElement("td");
-
-                // Si la columna es "Text", agregamos la clase 'text-column'
-                if (header === "Text") {
-                    td.classList.add("text-column");
-                }
-
                 td.textContent = row[header] || "";
+                td.classList.add(header === "Text" ? "text-column" : ""); // Aplicar la clase 'text-column' a la columna 'Text'
                 tr.appendChild(td);
             });
             tableBody.appendChild(tr);
         });
-
-        makeColumnsResizable();
-    }
-
-    function makeColumnsResizable() {
-        const thElements = document.querySelectorAll('th');
-        thElements.forEach(th => {
-            const resizer = th.querySelector('::after');
-            if (resizer) {
-                resizer.addEventListener('mousedown', initResize, false);
-            }
-        });
-    }
-
-    function initResize(e) {
-        e.preventDefault();
-        document.addEventListener('mousemove', onMouseMove);
-        document.addEventListener('mouseup', stopResize);
-    }
-
-    function onMouseMove(e) {
-        const th = e.target;
-        th.style.width = `${e.pageX - th.offsetLeft}px`;
-    }
-
-    function stopResize() {
-        document.removeEventListener('mousemove', onMouseMove);
-        document.removeEventListener('mouseup', stopResize);
     }
 
     function debounce(func, delay) {
@@ -133,4 +101,33 @@ document.addEventListener("DOMContentLoaded", function () {
 
     document.getElementById("filterInput").addEventListener("input", filterTable);
     document.getElementById("categoryFilter").addEventListener("change", filterTable);
+
+    // Cambio de tema
+    function setTheme(theme) {
+        if (theme === 'light') {
+            document.documentElement.style.setProperty('--background', '#f4f4f4');
+            document.documentElement.style.setProperty('--text-color', '#000');
+            document.documentElement.style.setProperty('--table-bg', '#fff');
+            document.documentElement.style.setProperty('--header-bg', '#ddd');
+            document.documentElement.style.setProperty('--border-color', '#ccc');
+        } else if (theme === 'dark') {
+            document.documentElement.style.setProperty('--background', '#222');
+            document.documentElement.style.setProperty('--text-color', '#fff');
+            document.documentElement.style.setProperty('--table-bg', '#333');
+            document.documentElement.style.setProperty('--header-bg', '#444');
+            document.documentElement.style.setProperty('--border-color', '#666');
+        } else if (theme === 'blue') {
+            document.documentElement.style.setProperty('--background', '#1b2a4e');
+            document.documentElement.style.setProperty('--text-color', '#fff');
+            document.documentElement.style.setProperty('--table-bg', '#2a3d66');
+            document.documentElement.style.setProperty('--header-bg', '#3b5998');
+            document.documentElement.style.setProperty('--border-color', '#3b5998');
+        }
+        localStorage.setItem('theme', theme);
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        setTheme(savedTheme);
+    });
 });
