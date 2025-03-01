@@ -3,15 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Visualizador de savegames en CSV para X4 Foundations">
-    <meta name="keywords" content="X4 Foundations, CSV, savegames, visualizador">
-    <title>X4 Foundations visualizar savegames en CSV online</title>
+    <meta name="description" content="Visualizador de partidas guardadas en CSV para X4 Foundations">
+    <meta name="keywords" content="X4 Foundations, CSV, partidas guardadas, visualizador, juego">
+    <meta name="language" content="Spanish">
+    <title>Visualizador de partidas guardadas X4 Foundations en CSV</title>
     <link rel="stylesheet" href="styles.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
     <script defer src="script.js"></script>
 </head>
 <body>
-    <h1>X4 Foundations visualizar savegames en CSV online</h1>
+    <h1>Visualizador de partidas guardadas X4 Foundations en CSV</h1>
 
     <div class="theme-buttons">
         <button onclick="setTheme('light')" class="light-mode">☀️ Claro</button>
@@ -20,11 +21,17 @@
     </div>
 
     <div class="controls">
-        <input type="file" id="csvFile" accept=".csv">
-        <input type="text" id="filterInput" placeholder="Buscar..." style="width: 300px;">
-        <select id="categoryFilter">
-            <option value="">Todas las categorías</option>
+        <input type="file" id="csvFile" accept=".csv" aria-label="Seleccionar archivo CSV">
+        <input type="text" id="filterInput" placeholder="Filtrar contenido..." style="width: 300px;" aria-label="Buscar en los datos">
+        <select id="categoryFilter" aria-label="Filtrar por categoría">
+            <option value="">Seleccionar categoría</option>
         </select>
+    </div>
+
+    <!-- Añadiendo mensaje de carga -->
+    <div id="loadingMessage" class="loading-message" style="display: none;">
+        <p>Procesando archivo CSV, por favor espere...</p>
+        <div class="spinner"></div>
     </div>
 
     <div class="table-container">

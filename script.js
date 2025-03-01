@@ -2,12 +2,15 @@ document.addEventListener("DOMContentLoaded", function () {
     // Estado global
     let tableData = [];
     let debounceTimeout;
-    let sortOrderTime = 1;
+    let sortOrderTime = -1; // Cambiado a -1 para ordenar de mayor a menor por defecto
 
     // Event Listeners
     document.getElementById("csvFile").addEventListener("change", function (event) {
         const file = event.target.files[0];
         if (!file) return;
+
+        // Mostrar mensaje de carga
+        document.getElementById('loadingMessage').style.display = 'block';
 
         const reader = new FileReader();
         reader.onload = function (e) {
@@ -20,6 +23,9 @@ document.addEventListener("DOMContentLoaded", function () {
             } catch (error) {
                 console.error('Error al procesar el archivo:', error);
                 alert('Error al procesar el archivo');
+            } finally {
+                // Ocultar mensaje de carga
+                document.getElementById('loadingMessage').style.display = 'none';
             }
         };
         reader.readAsText(file);
@@ -73,6 +79,30 @@ document.addEventListener("DOMContentLoaded", function () {
             const th = document.createElement("th");
             th.textContent = header;
             if (header === 'Time') {
+                // Ordenar los datos inicialmente
+                if (data === tableData) {
+                    const sortedData = [...data].sort((a, b) => {
+                        const [diaA, horaA] = a.Time.split(', ');
+                        const [diaB, horaB] = b.Time.split(', ');
+                        
+                        const numDiaA = parseInt(diaA.replace('Día ', ''));
+                        const numDiaB = parseInt(diaB.replace('Día ', ''));
+                        
+                        if (numDiaA !== numDiaB) {
+                            return sortOrderTime * (numDiaA - numDiaB);
+                        }
+                        
+                        const [horasA, minutosA, segundosA] = horaA.split(':').map(Number);
+                        const [horasB, minutosB, segundosB] = horaB.split(':').map(Number);
+                        
+                        const tiempoA = horasA * 3600 + minutosA * 60 + segundosA;
+                        const tiempoB = horasB * 3600 + minutosB * 60 + segundosB;
+                        
+                        return sortOrderTime * (tiempoA - tiempoB);
+                    });
+                    data = sortedData;
+                }
+
                 th.addEventListener('click', () => {
                     sortOrderTime *= -1;
                     const sortedData = [...data].sort((a, b) => {
@@ -110,6 +140,13 @@ document.addEventListener("DOMContentLoaded", function () {
             const tr = document.createElement("tr");
             headers.forEach(header => {
                 const td = document.createElement("td");
+                if (header === 'Text') {
+                    td.style.whiteSpace = 'pre-wrap';
+                    td.style.maxWidth = '300px';
+                    td.style.wordBreak = 'break-word';
+                } else if (header === 'Title') {
+                    td.className = 'title-column';
+                }
                 td.textContent = row[header] || "";
                 tr.appendChild(td);
             });
