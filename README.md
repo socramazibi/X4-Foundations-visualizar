@@ -1,4 +1,4 @@
-# X4-Foundations-visualizar, WEB para visualizar los archivos .CSV
+# X4 Foundations visualizar los savegames, WEB para visualizar los archivos .CSV
 
 ```Todo está hecho con IAs y ChatGPT```
 
