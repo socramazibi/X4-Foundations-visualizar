@@ -1,3 +1,4 @@
+/* Tema */
 :root {
     --background: #f4f4f4;
     --text-color: #000;
@@ -57,27 +58,39 @@ th, td {
     max-width: 300px;
     overflow: hidden;
     text-overflow: ellipsis;
-    position: relative;
+}
+
+/* Establecer el ancho de las columnas en el encabezado */
+th:nth-child(1), td:nth-child(1) {
+    width: 150px;
+}
+
+th:nth-child(2), td:nth-child(2) {
+    width: 250px;
+}
+
+th:nth-child(3), td:nth-child(3) {
+    width: 200px;
+}
+
+th:nth-child(4), td:nth-child(4) {
+    width: 300px;
+}
+
+/* Columna de texto */
+td.text-column, th.text-column {
+    width: 500px;  /* Ajusta el valor según lo necesario */
+    word-wrap: break-word;
+    white-space: normal;
 }
 
 th {
     background-color: var(--header-bg);
     position: sticky;
     top: 0;
-    cursor: col-resize; /* Cursor de redimensionamiento */
 }
 
-/* Redimensionamiento de columnas */
-th::after {
-    content: '';
-    position: absolute;
-    right: 0;
-    top: 0;
-    width: 5px;
-    height: 100%;
-    cursor: col-resize;
-}
-
+/* Botones de tema */
 .theme-buttons {
     margin-bottom: 10px;
 }
@@ -94,9 +107,3 @@ th::after {
 .light-mode { background: #fff; color: #000; border: 1px solid #ccc; }
 .dark-mode { background: #222; color: #fff; border: 1px solid #666; }
 .blue-mode { background: #1b2a4e; color: #fff; border: 1px solid #3b5998; }
-
-td.text-column {
-    max-width: 500px;
-    word-wrap: break-word;
-    white-space: normal;
-}
