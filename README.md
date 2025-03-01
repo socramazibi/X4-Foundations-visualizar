@@ -11,7 +11,7 @@ pero haz copias de seguridad. (Todo el código está en el repositorio)
 
 ``` Ahora puede trabajar con los 2 tipos de archivos .gz o .xml descomprime automáticamente él archivo .gz ```
 
-En esta ruta ```C:\Users\NOMBRE_USUARIO\Documents\Egosoft\X4\99866623\save``` suelen estar los Savegames, recuerda descomprimir.
+En esta ruta ```C:\Users\NOMBRE_USUARIO\Documents\Egosoft\X4\99866623\save``` suelen estar los Savegames, ~~recuerda descomprimir~~.
 
 ![imagen](https://github.com/user-attachments/assets/782aa275-5ed8-44e1-bded-9029851bb77c)
 
