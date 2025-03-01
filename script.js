@@ -2,7 +2,6 @@ document.addEventListener("DOMContentLoaded", function () {
     let tableData = [];
     let debounceTimeout;
 
-    // Cargar archivo CSV
     document.getElementById("csvFile").addEventListener("change", function (event) {
         const file = event.target.files[0];
         if (!file) return;
@@ -18,28 +17,29 @@ document.addEventListener("DOMContentLoaded", function () {
         reader.readAsText(file);
     });
 
-    // Convertir tiempo
     function formatTimeColumn(data) {
         data.forEach(row => {
             if (row.Time) {
-                row.Time = convertirTiempoX4(parseFloat(row.Time));
+                row.Time = convertirTiempoX4(parseFloat(row.Time)); // Convierte el tiempo
             }
         });
     }
 
     function convertirTiempoX4(segundos) {
-        if (isNaN(segundos)) return "";
+        if (isNaN(segundos)) return ""; // Manejar valores inválidos
+
         const dias = Math.floor(segundos / 86400);
         const horas = Math.floor((segundos % 86400) / 3600);
         const minutos = Math.floor((segundos % 3600) / 60);
         const segs = Math.floor(segundos % 60);
+
         return `Día ${dias}, ${horas.toString().padStart(2, '0')}:${minutos.toString().padStart(2, '0')}:${segs.toString().padStart(2, '0')}`;
     }
 
-    // Crear filtro de categoría
     function populateCategoryFilter(data) {
         const categoryFilter = document.getElementById("categoryFilter");
         categoryFilter.innerHTML = '<option value="">Todas las categorías</option>';
+
         const categories = new Set(data.map(row => row.Category).filter(Boolean));
         categories.forEach(category => {
             const option = document.createElement("option");
@@ -49,10 +49,10 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // Mostrar tabla
     function displayTable(data) {
         const tableHead = document.getElementById("tableHead");
         const tableBody = document.getElementById("tableBody");
+
         tableHead.innerHTML = "";
         tableBody.innerHTML = "";
 
@@ -77,4 +77,26 @@ document.addEventListener("DOMContentLoaded", function () {
             tableBody.appendChild(tr);
         });
     }
+
+    function debounce(func, delay) {
+        clearTimeout(debounceTimeout);
+        debounceTimeout = setTimeout(func, delay);
+    }
+
+    function filterTable() {
+        debounce(() => {
+            const filter = document.getElementById("filterInput").value.toLowerCase();
+            const selectedCategory = document.getElementById("categoryFilter").value;
+
+            const filteredData = tableData.filter(row =>
+                (selectedCategory === "" || row.Category === selectedCategory) &&
+                Object.values(row).some(value => value && value.toLowerCase().includes(filter))
+            );
+
+            displayTable(filteredData);
+        }, 300);
+    }
+
+    document.getElementById("filterInput").addEventListener("input", filterTable);
+    document.getElementById("categoryFilter").addEventListener("change", filterTable);
 });
