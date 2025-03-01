@@ -4,7 +4,7 @@
 
 ## X4 Foundations visualizar los savegame, primero pasa de XML a CSV.
 
-Puedes descargar un X4-Foundations_XML_CSV , están los archivos y códigos y puedes descargar el (X4_FOUNDATIONS_XML_CSV.exe "_internal" es una (carpeta necesita para funcionar)
+Puedes descargar un X4-Foundations_XML_CSV.zip , están los archivos y códigos y puedes descargar el X4_FOUNDATIONS_XML_CSV.exe .
 
 Todo comprimido en .zip, descomprimir en una carpeta para poder ejecutar.), ejecuta el X4_FOUNDATIONS_XML_CSV.exe y selecciona un .XML o un .gz y lo pasará a CSV, en los savegames del juego están comprimidos, ~~descomprímelo primero~~, no modifica nada,
 pero haz copias de seguridad. (Todo el código está en el repositorio)
