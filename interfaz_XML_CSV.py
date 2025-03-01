@@ -5,6 +5,7 @@ import eventos_mejorado
 import threading
 import time
 import os
+import gzip
 
 # Inicialización de la ventana principal
 root = tk.Tk()
@@ -14,25 +15,39 @@ root.title("X4 Foundations Conversor XML a CSV")
 # Variables globales
 ruta_xml = tk.StringVar()
 
-def seleccionar_archivo():
-    filepath = filedialog.askopenfilename(
-        defaultextension=".xml", 
-        filetypes=[("Archivos XML", "*.xml")]
-    )
-    if filepath:
-        ruta_xml.set(filepath)
-        log_message(f"Archivo XML seleccionado: {filepath}")
+# Configuración del grid
+root.grid_columnconfigure(1, weight=1)
+root.grid_rowconfigure(2, weight=1)
+
+# Crear el área de log primero
+log_text = tk.Text(root, height=20, width=80)
+scrollbar = tk.Scrollbar(root, command=log_text.yview)
+log_text.config(yscrollcommand=scrollbar.set)
 
 def log_message(message):
     log_text.insert(tk.END, message + "\n")
     log_text.see(tk.END)
 
+def seleccionar_archivo():
+    filepath = filedialog.askopenfilename(
+        defaultextension=".xml", 
+        filetypes=[("Archivos XML y GZ", "*.xml *.gz"), ("Archivos XML", "*.xml"), ("Archivos GZ", "*.gz")]
+    )
+    if filepath:
+        ruta_xml.set(filepath)
+        log_message(f"Archivo seleccionado: {filepath}")
+
 def convertir():
-    archivo_xml = ruta_xml.get()
-    archivo_csv = archivo_xml.replace(".xml", ".csv")
-    if not archivo_xml:
-        messagebox.showerror("Error", "Selecciona un archivo XML.")
+    archivo_entrada = ruta_xml.get()
+    if not archivo_entrada:
+        messagebox.showerror("Error", "Selecciona un archivo.")
         return
+
+    # Determinar el nombre del archivo de salida CSV
+    if archivo_entrada.endswith('.gz'):
+        archivo_csv = archivo_entrada[:-7] + '.csv'  # Elimina tanto .xml.gz como .gz
+    else:
+        archivo_csv = archivo_entrada.replace(".xml", ".csv")
 
     if os.path.exists(archivo_csv):
         if not messagebox.askyesno("Confirmar", "El archivo CSV ya existe. ¿Desea sobrescribirlo?"):
@@ -44,7 +59,20 @@ def convertir():
         log_message("Procesando...")
         try:
             inicio = time.time()
-            eventos_mejorado.convertir_xml_a_csv(archivo_xml, archivo_csv, None, log_message)
+            
+            # Si el archivo está comprimido, descomprimirlo primero
+            if archivo_entrada.endswith('.gz'):
+                log_message("Descomprimiendo archivo...")
+                archivo_temporal = archivo_entrada[:-3]  # Elimina .gz
+                with gzip.open(archivo_entrada, 'rb') as f_in:
+                    with open(archivo_temporal, 'wb') as f_out:
+                        f_out.write(f_in.read())
+                eventos_mejorado.convertir_xml_a_csv(archivo_temporal, archivo_csv, None, log_message)
+                # Limpieza del archivo temporal
+                os.remove(archivo_temporal)
+            else:
+                eventos_mejorado.convertir_xml_a_csv(archivo_entrada, archivo_csv, None, log_message)
+            
             fin = time.time()
             tiempo_procesamiento = fin - inicio
             log_message(f"✅ Archivo '{archivo_csv}' generado con éxito en {tiempo_procesamiento:.4f} segundos.")
