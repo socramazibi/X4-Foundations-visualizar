@@ -66,12 +66,25 @@
             max-width: 300px;
             overflow: hidden;
             text-overflow: ellipsis;
+            position: relative;
         }
 
         th {
             background-color: var(--header-bg);
             position: sticky;
             top: 0;
+            cursor: col-resize; /* Cursor de redimensionamiento */
+        }
+
+        /* Redimensionamiento de columnas */
+        th::after {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: 0;
+            width: 5px;
+            height: 100%;
+            cursor: col-resize;
         }
 
         .theme-buttons {
@@ -90,16 +103,11 @@
         .light-mode { background: #fff; color: #000; border: 1px solid #ccc; }
         .dark-mode { background: #222; color: #fff; border: 1px solid #666; }
         .blue-mode { background: #1b2a4e; color: #fff; border: 1px solid #3b5998; }
-
-        /* Nueva clase para la columna Text */
+        
         td.text-column {
-            white-space: normal;  /* Permite que el texto haga salto de línea */
-            word-wrap: break-word; /* Rompe las palabras largas para ajustarlas a la celda */
-            max-width: 500px;  /* Limita el ancho máximo para evitar que la columna sea demasiado ancha */
-            word-break: break-all; /* Rompe el texto de manera que no se desborde */
-            padding: 8px;
-            text-align: left;
-            vertical-align: top; /* Alinea el texto en la parte superior de la celda */
+            max-width: 500px;
+            word-wrap: break-word;
+            white-space: normal;
         }
     </style>
 </head>
@@ -124,7 +132,7 @@
 
     <!-- Tabla -->
     <div class="table-container">
-        <table>
+        <table id="resizableTable">
             <thead id="tableHead"></thead>
             <tbody id="tableBody"></tbody>
         </table>
@@ -157,6 +165,141 @@
         document.addEventListener("DOMContentLoaded", function () {
             const savedTheme = localStorage.getItem('theme') || 'light';
             setTheme(savedTheme);
+
+            let tableData = [];
+            let debounceTimeout;
+
+            document.getElementById("csvFile").addEventListener("change", function (event) {
+                const file = event.target.files[0];
+                if (!file) return;
+
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    const csv = Papa.parse(e.target.result, { header: true });
+                    tableData = csv.data;
+                    formatTimeColumn(tableData);
+                    populateCategoryFilter(tableData);
+                    displayTable(tableData);
+                };
+                reader.readAsText(file);
+            });
+
+            function formatTimeColumn(data) {
+                data.forEach(row => {
+                    if (row.Time) {
+                        row.Time = convertirTiempoX4(parseFloat(row.Time)); // Convierte el tiempo
+                    }
+                });
+            }
+
+            function convertirTiempoX4(segundos) {
+                if (isNaN(segundos)) return ""; // Manejar valores inválidos
+
+                const dias = Math.floor(segundos / 86400);
+                const horas = Math.floor((segundos % 86400) / 3600);
+                const minutos = Math.floor((segundos % 3600) / 60);
+                const segs = Math.floor(segundos % 60);
+
+                return `Día ${dias}, ${horas.toString().padStart(2, '0')}:${minutos.toString().padStart(2, '0')}:${segs.toString().padStart(2, '0')}`;
+            }
+
+            function populateCategoryFilter(data) {
+                const categoryFilter = document.getElementById("categoryFilter");
+                categoryFilter.innerHTML = '<option value="">Todas las categorías</option>';
+
+                const categories = new Set(data.map(row => row.Category).filter(Boolean));
+                categories.forEach(category => {
+                    const option = document.createElement("option");
+                    option.value = category;
+                    option.textContent = category;
+                    categoryFilter.appendChild(option);
+                });
+            }
+
+            function displayTable(data) {
+                const tableHead = document.getElementById("tableHead");
+                const tableBody = document.getElementById("tableBody");
+
+                tableHead.innerHTML = "";
+                tableBody.innerHTML = "";
+
+                if (data.length === 0) return;
+
+                const headers = Object.keys(data[0]);
+                const headRow = document.createElement("tr");
+                headers.forEach(header => {
+                    const th = document.createElement("th");
+                    th.textContent = header;
+                    headRow.appendChild(th);
+                });
+                tableHead.appendChild(headRow);
+
+                data.forEach(row => {
+                    const tr = document.createElement("tr");
+                    headers.forEach(header => {
+                        const td = document.createElement("td");
+
+                        // Si la columna es "Text", agregamos la clase 'text-column'
+                        if (header === "Text") {
+                            td.classList.add("text-column");
+                        }
+
+                        td.textContent = row[header] || "";
+                        tr.appendChild(td);
+                    });
+                    tableBody.appendChild(tr);
+                });
+
+                makeColumnsResizable();
+            }
+
+            function makeColumnsResizable() {
+                const thElements = document.querySelectorAll('th');
+                thElements.forEach(th => {
+                    const resizer = th.querySelector('::after');
+                    if (resizer) {
+                        resizer.addEventListener('mousedown', initResize, false);
+                    }
+                });
+            }
+
+            function initResize(e) {
+                e.preventDefault();
+                document.addEventListener('mousemove', onMouseMove);
+                document.addEventListener('mouseup', stopResize);
+            }
+
+            function onMouseMove(e) {
+                const th = e.target;
+                th.style.width = `${e.pageX - th.offsetLeft}px`;
+            }
+
+            function stopResize() {
+                document.removeEventListener('mousemove', onMouseMove);
+                document.removeEventListener('mouseup', stopResize);
+            }
+
+            function debounce(func, delay) {
+                clearTimeout(debounceTimeout);
+                debounceTimeout = setTimeout(func, delay);
+            }
+
+            function filterTable() {
+                debounce(() => {
+                    const filter = document.getElementById("filterInput").value.toLowerCase();
+                    const selectedCategory = document.getElementById("categoryFilter").value;
+
+                    const filteredData = tableData.filter(row =>
+                        (selectedCategory === "" || row.Category === selectedCategory) &&
+                        Object.values(row).some(value => value && value.toLowerCase().includes(filter))
+                    );
+
+                    displayTable(filteredData);
+                }, 300);
+            }
+
+            document.getElementById("filterInput").addEventListener("input", filterTable);
+            document.getElementById("categoryFilter").addEventListener("change", filterTable);
         });
     </script>
 </body>
