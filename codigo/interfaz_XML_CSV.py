@@ -43,22 +43,13 @@ def convertir():
         messagebox.showerror("Error", "Selecciona un archivo.")
         return
 
-    # Determinar el nombre del archivo de salida CSV
-    if archivo_entrada.endswith('.gz'):
-        archivo_csv = archivo_entrada[:-7] + '.csv'  # Elimina tanto .xml.gz como .gz
-    else:
-        archivo_csv = archivo_entrada.replace(".xml", ".csv")
-
-    if os.path.exists(archivo_csv):
-        if not messagebox.askyesno("Confirmar", "El archivo CSV ya existe. ¿Desea sobrescribirlo?"):
-            return
-
     convertir_button.config(state=tk.DISABLED)
 
     def convertir_en_hilo():
         log_message("Procesando...")
         try:
             inicio = time.time()
+            archivo_generado = None
             
             # Si el archivo está comprimido, descomprimirlo primero
             if archivo_entrada.endswith('.gz'):
@@ -67,15 +58,14 @@ def convertir():
                 with gzip.open(archivo_entrada, 'rb') as f_in:
                     with open(archivo_temporal, 'wb') as f_out:
                         f_out.write(f_in.read())
-                eventos_mejorado.convertir_xml_a_csv(archivo_temporal, archivo_csv, None, log_message)
-                # Limpieza del archivo temporal
-                os.remove(archivo_temporal)
+                archivo_generado = eventos_mejorado.convertir_xml_a_csv(archivo_temporal, None, None, log_message)
+                os.remove(archivo_temporal)  # Elimina el archivo temporal después de la conversión
             else:
-                eventos_mejorado.convertir_xml_a_csv(archivo_entrada, archivo_csv, None, log_message)
-            
+                archivo_generado = eventos_mejorado.convertir_xml_a_csv(archivo_entrada, None, None, log_message)
+
             fin = time.time()
             tiempo_procesamiento = fin - inicio
-            log_message(f"✅ Archivo '{archivo_csv}' generado con éxito en {tiempo_procesamiento:.4f} segundos.")
+            log_message(f"✅ Archivo '{archivo_generado}' generado con éxito en {tiempo_procesamiento:.4f} segundos.")
         except Exception as e:
             log_message(f"❌ Error al convertir: {e}")
         finally:
