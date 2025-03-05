@@ -33,4 +33,4 @@ Enlace a X4-Foundations-visualizar.
 
 Esta hecho con varias IAs y ChatGPT, no tengo ni idea de programar lo justo para entretenerme, le echado algunas horas hasta que salió algo que me parecía sencillo y funcional y que me gustara.
 
-En la carpeta código incluyo otro archivo en Python que hace lo mismo que la web, pero en el PC, es más básico, pero funcional y no necesita internet, se llama visualizar_CSV.py.
+En la carpeta código incluyo otro archivo en Python que hace lo mismo que la web, pero en el PC, es más básico, pero funcional y no necesita internet, se llama visualizar_CSV.py, también incluyo una versión visualizar_CSV_V0.1.exe
